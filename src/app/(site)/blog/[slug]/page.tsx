@@ -40,11 +40,15 @@ export default async function BlogPost({ params }: Props) {
   const settings = await getSettings(); // admin-managed AdSense keys + preview toggle
   const recent = (await listPublished()).filter((p) => p.slug !== slug).slice(0, 5);
 
-  // Split the body into two halves so the keyword panel sits in the middle.
+  // Split the body into three parts so the related-search block appears twice:
+  // once right after the opening paragraph, and once just before the closing
+  // paragraph(s).
   const paragraphs = post.content.split(/\n{2,}/).filter((p) => p.trim());
-  const mid = Math.ceil(paragraphs.length / 2);
-  const firstHalf = paragraphs.slice(0, mid);
-  const secondHalf = paragraphs.slice(mid);
+  const firstCut = Math.min(1, paragraphs.length);
+  const lastCut = Math.max(firstCut, paragraphs.length - 2);
+  const openingPara = paragraphs.slice(0, firstCut);
+  const middlePara = paragraphs.slice(firstCut, lastCut);
+  const closingPara = paragraphs.slice(lastCut);
   const readMins = Math.max(1, Math.round(post.content.split(/\s+/).length / 200));
 
   const jsonLd = {
@@ -103,11 +107,11 @@ export default async function BlogPost({ params }: Props) {
           )}
 
           <div className="article mt-8 text-[17px] text-gray-800">
-            {firstHalf.map((p, i) => (
+            {openingPara.map((p, i) => (
               <p key={`a-${i}`}>{p}</p>
             ))}
 
-            {/* Related searches — ① live AdSense unit + ② local preview, both labeled. */}
+            {/* Related searches #1 — right after the opening paragraph. */}
             <RelatedSearchSection
               title={post.title}
               tags={post.tags}
@@ -116,8 +120,21 @@ export default async function BlogPost({ params }: Props) {
               showPreview={settings.show_keyword_preview !== "false"}
             />
 
-            {secondHalf.map((p, i) => (
+            {middlePara.map((p, i) => (
               <p key={`b-${i}`}>{p}</p>
+            ))}
+
+            {/* Related searches #2 — right before the closing paragraph(s). */}
+            <RelatedSearchSection
+              title={post.title}
+              tags={post.tags}
+              pubId={settings.adsense_pub_id}
+              styleId={settings.rsoc_style_id}
+              showPreview={settings.show_keyword_preview !== "false"}
+            />
+
+            {closingPara.map((p, i) => (
+              <p key={`c-${i}`}>{p}</p>
             ))}
 
             {paragraphs.length === 0 && (
