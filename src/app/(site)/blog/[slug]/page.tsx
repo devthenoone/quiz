@@ -18,14 +18,6 @@ const thumbs = [
   "from-sky-400 to-cyan-500",
 ];
 
-const popularSearches = [
-  "Remote Jobs",
-  "Part Time Jobs",
-  "Warehouse Jobs",
-  "Driver Jobs",
-  "Customer Service",
-];
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBySlug(slug);
@@ -191,23 +183,6 @@ export default async function BlogPost({ params }: Props) {
               </Link>
             </div>
           )}
-
-          <div className="rounded-2xl border bg-white p-5">
-            <h3 className="mb-3 font-bold text-gray-900">Popular Searches</h3>
-            <div className="flex flex-wrap gap-2">
-              {popularSearches.map((s) => (
-                <a
-                  key={s}
-                  href={cseUrl(`${s} near me`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full border border-gray-200 px-3 py-1.5 text-xs text-gray-700 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-700"
-                >
-                  {s}
-                </a>
-              ))}
-            </div>
-          </div>
 
           <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 p-6 text-white">
             <h3 className="text-lg font-bold">Looking for a job?</h3>

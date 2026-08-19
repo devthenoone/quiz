@@ -1,41 +1,9 @@
 import Link from "next/link";
 import { listPublished } from "@/lib/posts";
-import { cseUrl } from "@/lib/cse";
 import { CATEGORIES } from "@/lib/categories";
 import GoogleJobSearch from "@/components/GoogleJobSearch";
 
 export const dynamic = "force-dynamic";
-
-const trending = [
-  "Remote Jobs",
-  "Warehouse Jobs",
-  "Nurse Jobs",
-  "Driver Jobs",
-  "Part Time Jobs",
-  "Customer Service",
-  "Government Jobs",
-];
-
-const sidebarTrending = [
-  "Remote Jobs",
-  "Part Time Jobs",
-  "Warehouse Jobs",
-  "Work From Home Jobs",
-  "Teaching Jobs",
-  "Government Jobs",
-  "Delivery Driver Jobs",
-  "Customer Service Jobs",
-];
-
-const locations = [
-  "New York",
-  "Los Angeles",
-  "Chicago",
-  "Houston",
-  "Dallas",
-  "Miami",
-  "Austin",
-];
 
 export default async function Home() {
   const posts = await listPublished();
@@ -61,24 +29,6 @@ export default async function Home() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 lg:grid-cols-[1fr_320px]">
         {/* Main column */}
         <main className="min-w-0 space-y-10">
-          {/* Trending searches */}
-          <section className="rounded-2xl border bg-white p-6">
-            <h2 className="mb-4 text-lg font-bold text-gray-900">Trending Searches</h2>
-            <div className="flex flex-wrap gap-3">
-              {trending.map((t) => (
-                <a
-                  key={t}
-                  href={cseUrl(`${t} near me`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3.5 py-2 text-sm text-gray-700 transition hover:border-blue-400 hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <SearchIcon /> {t}
-                </a>
-              ))}
-            </div>
-          </section>
-
           {/* Popular categories */}
           <section>
             <h2 className="mb-4 text-xl font-bold text-gray-900">Popular Job Categories</h2>
@@ -192,21 +142,6 @@ export default async function Home() {
             </form>
           </div>
 
-          <SidebarList
-            title="Trending Searches"
-            items={sidebarTrending.map((t) => ({ label: t, href: cseUrl(`${t} near me`) }))}
-            chevron
-          />
-
-          <SidebarList
-            title="Popular Locations"
-            items={locations.map((l) => ({
-              label: `Jobs in ${l}`,
-              href: cseUrl(`jobs in ${l}`),
-              pin: true,
-            }))}
-          />
-
           {guides.length > 0 && (
             <div className="rounded-2xl border bg-white p-5">
               <h3 className="mb-3 font-bold text-gray-900">Recent Guides</h3>
@@ -230,49 +165,6 @@ export default async function Home() {
           )}
         </aside>
       </div>
-    </div>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-gray-400">
-      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-      <path d="M21 21l-4.3-4.3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function SidebarList({
-  title,
-  items,
-  chevron,
-}: {
-  title: string;
-  items: { label: string; href: string; pin?: boolean }[];
-  chevron?: boolean;
-}) {
-  return (
-    <div className="rounded-2xl border bg-white p-5">
-      <h3 className="mb-3 font-bold text-gray-900">{title}</h3>
-      <ul className="divide-y">
-        {items.map((it) => (
-          <li key={it.label}>
-            <a
-              href={it.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between py-2.5 text-sm text-gray-700 hover:text-blue-700"
-            >
-              <span className="flex items-center gap-2">
-                {it.pin && <span className="text-blue-500">📍</span>}
-                {it.label}
-              </span>
-              {chevron && <span className="text-gray-300">›</span>}
-            </a>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
