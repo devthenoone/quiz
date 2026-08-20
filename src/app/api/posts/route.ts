@@ -1,7 +1,16 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { one, run, type PostRow } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { slugify } from "@/lib/slug";
+
+// The homepage/blog list/post pages are cached (ISR) for speed — bust that
+// cache whenever a post changes so readers see the update immediately.
+function revalidatePosts(slug?: string) {
+  revalidatePath("/");
+  revalidatePath("/blogs");
+  if (slug) revalidatePath(`/blog/${slug}`);
+}
 
 async function uniqueSlug(base: string): Promise<string> {
   const root = slugify(base) || "post";
@@ -42,6 +51,7 @@ export async function POST(req: Request) {
     ]
   );
 
+  revalidatePosts(slug);
   return NextResponse.json({ ok: true, id: Number(res.lastInsertRowid), slug });
 }
 
@@ -75,6 +85,7 @@ export async function PUT(req: Request) {
     ]
   );
 
+  revalidatePosts(post.slug);
   return NextResponse.json({ ok: true, slug: post.slug });
 }
 
@@ -92,5 +103,6 @@ export async function DELETE(req: Request) {
 
   await run("DELETE FROM post_links WHERE post_id = ?", [post.id]);
   await run("DELETE FROM posts WHERE id = ?", [post.id]);
+  revalidatePosts(post.slug);
   return NextResponse.json({ ok: true });
 }

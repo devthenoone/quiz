@@ -6,7 +6,9 @@ import { getSettings } from "@/lib/settings";
 import { cseUrl } from "@/lib/cse";
 import RelatedSearchSection from "@/components/RelatedSearchSection";
 
-export const dynamic = "force-dynamic";
+// Cached (ISR) instead of force-dynamic — see posts/settings API routes for
+// on-demand revalidation when a post or the AdSense settings change.
+export const revalidate = 300;
 
 type Props = { params: Promise<{ slug: string }> };
 

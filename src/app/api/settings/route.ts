@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/lib/auth";
 import { getSettings, setSettings } from "@/lib/settings";
 
@@ -19,5 +20,7 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Invalid body." }, { status: 400 });
   }
   await setSettings(body as Record<string, string>);
+  // AdSense keys / preview toggle are baked into every cached blog post page.
+  revalidatePath("/blog", "layout");
   return NextResponse.json({ ok: true, settings: await getSettings() });
 }

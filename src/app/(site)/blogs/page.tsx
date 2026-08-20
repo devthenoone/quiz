@@ -3,7 +3,9 @@ import Link from "next/link";
 import { listPublished, tagList } from "@/lib/posts";
 import { CATEGORIES, categoryBySlug } from "@/lib/categories";
 
-export const dynamic = "force-dynamic";
+// Cached (ISR) instead of force-dynamic — see posts API route for on-demand
+// revalidation when a post is created/edited/deleted.
+export const revalidate = 300;
 
 type Props = { searchParams: Promise<{ category?: string }> };
 

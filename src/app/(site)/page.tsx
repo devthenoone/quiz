@@ -3,7 +3,10 @@ import { listPublished } from "@/lib/posts";
 import { CATEGORIES } from "@/lib/categories";
 import GoogleJobSearch from "@/components/GoogleJobSearch";
 
-export const dynamic = "force-dynamic";
+// Cached (ISR) instead of force-dynamic: lets Next.js serve this instantly and
+// prefetch it, instead of a full server render on every navigation. New/edited
+// posts still show immediately via revalidatePath() in the posts API route.
+export const revalidate = 300;
 
 export default async function Home() {
   const posts = await listPublished();
