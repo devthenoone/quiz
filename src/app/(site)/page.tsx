@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listPublished } from "@/lib/posts";
+import { listPublished, postHref } from "@/lib/posts";
 import { CATEGORIES } from "@/lib/categories";
 import GoogleJobSearch from "@/components/GoogleJobSearch";
 
@@ -41,7 +41,7 @@ export default async function Home() {
                 return (
                   <Link
                     key={c.slug}
-                    href={`/blogs?category=${c.slug}`}
+                    href={`/guides?category=${c.slug}`}
                     className="group rounded-xl border bg-white p-5 text-center transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
                   >
                     <div
@@ -61,7 +61,7 @@ export default async function Home() {
             </div>
             <div className="mt-6 text-center">
               <Link
-                href="/blogs"
+                href="/guides"
                 className="inline-block rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 Browse All Categories
@@ -77,7 +77,7 @@ export default async function Home() {
                 {guides.map((g, i) => (
                   <Link
                     key={g.id}
-                    href={`/blog/${g.slug}`}
+                    href={postHref(g)}
                     className="group overflow-hidden rounded-xl border bg-white transition hover:shadow-md"
                   >
                     <div
@@ -151,7 +151,7 @@ export default async function Home() {
               <ul className="space-y-3">
                 {guides.map((g, i) => (
                   <li key={g.id}>
-                    <Link href={`/blog/${g.slug}`} className="flex items-center gap-3 group">
+                    <Link href={postHref(g)} className="flex items-center gap-3 group">
                       <span
                         className={`h-11 w-14 shrink-0 rounded-md bg-gradient-to-br ${
                           ["from-blue-400 to-indigo-500", "from-emerald-400 to-teal-500", "from-orange-400 to-rose-500", "from-violet-400 to-purple-500"][i % 4]

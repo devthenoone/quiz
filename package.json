@@ -15,9 +15,12 @@
   "dependencies": {
     "@libsql/client": "^0.17.4",
     "bcryptjs": "^2.4.3",
+    "chart.js": "^4.5.1",
     "jose": "^5.9.6",
     "next": "^15.5.19",
+    "nextjs-toploader": "^3.9.17",
     "react": "19.0.0",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "19.0.0"
   },
   "devDependencies": {

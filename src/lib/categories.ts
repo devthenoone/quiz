@@ -6,7 +6,7 @@ export type Category = {
 };
 
 // Single source of truth for job/blog categories (used by the homepage grid,
-// the /blogs filter, and the admin post editor).
+// the /guides and /blog filters, and the admin post editor).
 export const CATEGORIES: Category[] = [
   { name: "Technology", slug: "technology", icon: "💻", color: "bg-blue-50" },
   { name: "Healthcare", slug: "healthcare", icon: "❤️", color: "bg-red-50" },

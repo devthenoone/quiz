@@ -1,20 +1,18 @@
 import Link from "next/link";
-import { cseUrl } from "@/lib/cse";
 
-const browseJobs = [
-  "Remote Jobs",
-  "Part Time Jobs",
-  "Full Time Jobs",
-  "Warehouse Jobs",
-  "Work From Home Jobs",
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "Search", href: "/search" },
+  { label: "Guides", href: "/guides" },
+  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
-const categories = [
-  "Technology Jobs",
-  "Healthcare Jobs",
-  "Driving Jobs",
-  "Construction Jobs",
-  "Office Jobs",
-  "Education Jobs",
+
+const policies = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Use", href: "/terms" },
+  { label: "Disclaimer", href: "/disclaimer" },
 ];
 
 export default function Navbar() {
@@ -27,38 +25,26 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-1 text-sm font-medium text-gray-700 md:flex">
-          <Link href="/" className="rounded px-3 py-2 hover:text-blue-600">
-            Home
-          </Link>
+          {navLinks.map((l) => (
+            <Link key={l.href} href={l.href} className="rounded px-3 py-2 hover:text-blue-600">
+              {l.label}
+            </Link>
+          ))}
 
-          <Dropdown label="Browse Jobs" items={browseJobs} />
-          <Dropdown label="Job Categories" items={categories} />
-
-          <Link href="/blogs" className="rounded px-3 py-2 hover:text-blue-600">
-            Career Guides
-          </Link>
-          <Link href="/blogs" className="rounded px-3 py-2 hover:text-blue-600">
-            Resume Tips
-          </Link>
-          <Link href="/about" className="rounded px-3 py-2 hover:text-blue-600">
-            About Us
-          </Link>
+          <Dropdown label="Policies" items={policies} />
         </div>
-
-        <a
-          href={cseUrl("jobs near me")}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
-        >
-          Find Jobs
-        </a>
       </nav>
     </header>
   );
 }
 
-function Dropdown({ label, items }: { label: string; items: string[] }) {
+function Dropdown({
+  label,
+  items,
+}: {
+  label: string;
+  items: { label: string; href: string }[];
+}) {
   return (
     <div className="group relative">
       <button className="flex items-center gap-1 rounded px-3 py-2 hover:text-blue-600">
@@ -69,15 +55,13 @@ function Dropdown({ label, items }: { label: string; items: string[] }) {
       </button>
       <div className="invisible absolute left-0 top-full z-50 w-56 translate-y-1 rounded-xl border bg-white p-2 opacity-0 shadow-lg transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
         {items.map((it) => (
-          <a
-            key={it}
-            href={cseUrl(`${it} near me`)}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            key={it.label}
+            href={it.href}
             className="block rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700"
           >
-            {it}
-          </a>
+            {it.label}
+          </Link>
         ))}
       </div>
     </div>

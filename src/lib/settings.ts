@@ -5,6 +5,20 @@ export const SETTING_KEYS = [
   "adsense_pub_id",
   "rsoc_style_id",
   "show_keyword_preview",
+  // Website Config
+  "homepage_is_search",
+  "trending_region",
+  "results_per_page",
+  "ads_top_enabled",
+  "ads_center_enabled",
+  "ads_bottom_enabled",
+  "mirror_mode",
+  "sitewide_pub_id",
+  "sitewide_style_id",
+  "safesearch",
+  "open_new_tab",
+  // Email Setup
+  "smtp_enabled",
 ] as const;
 
 export type SettingKey = (typeof SETTING_KEYS)[number];

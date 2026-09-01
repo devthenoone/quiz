@@ -13,6 +13,7 @@ type Initial = {
   content?: string;
   tags?: string;
   category?: string;
+  type?: string;
   published?: boolean;
 };
 
@@ -25,6 +26,9 @@ export default function PostEditor({ initial }: { initial?: Initial }) {
   const [content, setContent] = useState(initial?.content ?? "");
   const [tags, setTags] = useState(initial?.tags ?? "");
   const [category, setCategory] = useState(initial?.category ?? "");
+  const [type, setType] = useState<"guide" | "blog">(
+    initial?.type === "blog" ? "blog" : "guide"
+  );
   const [published, setPublished] = useState(initial?.published ?? true);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -46,6 +50,7 @@ export default function PostEditor({ initial }: { initial?: Initial }) {
         content,
         tags,
         category,
+        type,
         published,
       }),
     });
@@ -55,7 +60,7 @@ export default function PostEditor({ initial }: { initial?: Initial }) {
       setError(json.error || "Failed to save.");
       return;
     }
-    router.push(json.slug ? `/blog/${json.slug}` : "/dashboard");
+    router.push(json.slug ? `/${type === "blog" ? "blog" : "guides"}/${json.slug}` : "/dashboard");
     router.refresh();
   }
 
@@ -74,6 +79,21 @@ export default function PostEditor({ initial }: { initial?: Initial }) {
             placeholder="Post title"
             className="w-full rounded-lg border px-4 py-3 text-xl font-semibold outline-none focus:border-brand focus:ring-1 focus:ring-brand"
           />
+
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-gray-700">Type</span>
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value as "guide" | "blog")}
+              className="w-full rounded-lg border bg-white px-4 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+            >
+              <option value="guide">Guide</option>
+              <option value="blog">Blog</option>
+            </select>
+            <span className="mt-1 block text-xs text-gray-500">
+              Guides publish to /guides/…, Blog posts publish to /blog/….
+            </span>
+          </label>
 
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-gray-700">Category</span>

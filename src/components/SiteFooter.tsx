@@ -1,26 +1,24 @@
 import Link from "next/link";
 import GoogleWordmark from "./GoogleWordmark";
-import { cseUrl } from "@/lib/cse";
 
 const quickLinks = [
   { label: "Home", href: "/" },
-  { label: "Browse Jobs", href: cseUrl("jobs near me") },
-  { label: "Job Categories", href: cseUrl("job categories near me") },
-  { label: "Career Guides", href: "/blogs" },
-  { label: "Resume Tips", href: "/blogs" },
+  { label: "Search", href: "/search" },
+  { label: "Guides", href: "/guides" },
+  { label: "Blog", href: "/blog" },
   { label: "About Us", href: "/about" },
 ];
 const employers = [
   { label: "Post a Job", href: "/contact" },
   { label: "Browse Resumes", href: "#" },
   { label: "Pricing", href: "#" },
-  { label: "Resources", href: "/blogs" },
+  { label: "Resources", href: "/guides" },
 ];
 const support = [
   { label: "Contact Us", href: "/contact" },
-  { label: "FAQ", href: "#" },
-  { label: "Privacy Policy", href: "#" },
-  { label: "Terms of Use", href: "#" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Use", href: "/terms" },
+  { label: "Disclaimer", href: "/disclaimer" },
   { label: "Sitemap", href: "/sitemap.xml" },
 ];
 

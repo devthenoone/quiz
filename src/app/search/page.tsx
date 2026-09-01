@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 import SearchClient from "@/components/SearchClient";
-import { listPublished } from "@/lib/posts";
+import { listPublished, postHref } from "@/lib/posts";
 import { cseUrl } from "@/lib/cse";
 
 export const dynamic = "force-dynamic";
@@ -41,7 +41,7 @@ export default async function SearchPage() {
                 <ul className="space-y-4">
                   {posts.map((p, i) => (
                     <li key={p.id}>
-                      <Link href={`/blog/${p.slug}`} className="group flex gap-3">
+                      <Link href={postHref(p)} className="group flex gap-3">
                         <span
                           className={`h-14 w-16 shrink-0 rounded-lg bg-gradient-to-br ${
                             [

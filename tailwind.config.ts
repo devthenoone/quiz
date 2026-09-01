@@ -10,6 +10,18 @@ export default {
           dark: "#1557b0",
           light: "#e8f0fe",
         },
+        // Admin dashboard palette — separate from the public-site "brand" blue.
+        admin: {
+          crimson: "#E31C4D",
+          "crimson-dark": "#C81640",
+          purple: "#6C5CE7",
+          "purple-dark": "#4C3FC0",
+          pink: "#EC4899",
+          "pink-dark": "#DB2777",
+          navy: "#0F172A",
+          bg: "#FAFAFB",
+          border: "#E5E7EB",
+        },
       },
       keyframes: {
         pulseIn: {

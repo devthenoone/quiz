@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS posts (
   content    TEXT NOT NULL DEFAULT '',
   tags       TEXT NOT NULL DEFAULT '',
   category   TEXT NOT NULL DEFAULT '',
+  type       TEXT NOT NULL DEFAULT 'guide',
   published  INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -77,6 +78,18 @@ CREATE TABLE IF NOT EXISTS settings (
   key   TEXT PRIMARY KEY,
   value TEXT NOT NULL DEFAULT ''
 );
+CREATE TABLE IF NOT EXISTS engines (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  name            TEXT NOT NULL,
+  cse_cx          TEXT NOT NULL DEFAULT '',
+  pub_id          TEXT NOT NULL DEFAULT '',
+  style_id        TEXT NOT NULL DEFAULT '',
+  image_search    INTEGER NOT NULL DEFAULT 0,
+  show_thumbnails INTEGER NOT NULL DEFAULT 1,
+  is_default      INTEGER NOT NULL DEFAULT 0,
+  created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
 `;
 
 async function migrate(): Promise<void> {
@@ -87,6 +100,46 @@ async function migrate(): Promise<void> {
     await db.execute("ALTER TABLE posts ADD COLUMN category TEXT NOT NULL DEFAULT ''");
   } catch {
     /* column already present */
+  }
+  try {
+    await db.execute("ALTER TABLE posts ADD COLUMN type TEXT NOT NULL DEFAULT 'guide'");
+  } catch {
+    /* column already present */
+  }
+  const postColumns: [string, string][] = [
+    ["h1_heading", "TEXT NOT NULL DEFAULT ''"],
+    ["meta_title", "TEXT NOT NULL DEFAULT ''"],
+    ["canonical_url", "TEXT NOT NULL DEFAULT ''"],
+    ["indexable", "INTEGER NOT NULL DEFAULT 1"],
+    ["featured_image", "TEXT NOT NULL DEFAULT ''"],
+    ["updated_label", "TEXT NOT NULL DEFAULT ''"],
+    ["reading_time", "INTEGER"],
+    ["byline", "TEXT NOT NULL DEFAULT ''"],
+    ["kicker", "TEXT NOT NULL DEFAULT ''"],
+    ["card_title", "TEXT NOT NULL DEFAULT ''"],
+    ["primary_seed", "TEXT NOT NULL DEFAULT ''"],
+    ["extra_seeds", "TEXT NOT NULL DEFAULT ''"],
+  ];
+  for (const [col, def] of postColumns) {
+    try {
+      await db.execute(`ALTER TABLE posts ADD COLUMN ${col} ${def}`);
+    } catch {
+      /* column already present */
+    }
+  }
+  const userColumns: [string, string][] = [
+    ["username", "TEXT NOT NULL DEFAULT ''"],
+    ["gender", "TEXT NOT NULL DEFAULT ''"],
+    ["avatar_url", "TEXT NOT NULL DEFAULT ''"],
+    ["use_gravatar", "INTEGER NOT NULL DEFAULT 0"],
+    ["role", "TEXT NOT NULL DEFAULT 'administrator'"],
+  ];
+  for (const [col, def] of userColumns) {
+    try {
+      await db.execute(`ALTER TABLE users ADD COLUMN ${col} ${def}`);
+    } catch {
+      /* column already present */
+    }
   }
 }
 
@@ -124,6 +177,11 @@ export type UserRow = {
   email: string;
   name: string;
   password: string;
+  username: string;
+  gender: string;
+  avatar_url: string;
+  use_gravatar: number;
+  role: string;
   created_at: string;
 };
 
@@ -136,7 +194,20 @@ export type PostRow = {
   content: string;
   tags: string;
   category: string;
+  type: string;
   published: number;
+  h1_heading: string;
+  meta_title: string;
+  canonical_url: string;
+  indexable: number;
+  featured_image: string;
+  updated_label: string;
+  reading_time: number | null;
+  byline: string;
+  kicker: string;
+  card_title: string;
+  primary_seed: string;
+  extra_seeds: string;
   created_at: string;
   updated_at: string;
   author_name?: string;
@@ -148,4 +219,17 @@ export type PostLinkRow = {
   keyword: string;
   url: string;
   created_at: string;
+};
+
+export type EngineRow = {
+  id: number;
+  name: string;
+  cse_cx: string;
+  pub_id: string;
+  style_id: string;
+  image_search: number;
+  show_thumbnails: number;
+  is_default: number;
+  created_at: string;
+  updated_at: string;
 };
