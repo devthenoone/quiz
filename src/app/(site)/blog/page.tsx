@@ -19,6 +19,7 @@ export default function BlogPage() {
       description="News, tips, and updates on finding jobs near you."
       emptyLabel="No blog posts yet."
       showCategoryFilter={false}
+      showPopularSearches
     />
   );
 }

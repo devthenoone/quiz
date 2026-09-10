@@ -72,9 +72,55 @@ function pick<T>(arr: T[], seed: number): T {
   return arr[seed % arr.length];
 }
 
+// Trailing/leading phrases that MODIFIERS itself appends/prepends. Suggestions
+// are often re-fed back in as the next title (e.g. clicking a suggestion),
+// so without this, re-deriving from an already-modified phrase like "car
+// service near me" would naively word-slice it to "car service near" (the
+// word-count slice below cuts off "me"), then bolt another modifier onto
+// that fragment — producing nonsense like "car service near for beginners".
+// Stripping known modifier phrases first recovers the clean base topic.
+const MODIFIER_SUFFIXES = [
+  " for beginners",
+  " near me",
+  " full time",
+  " part time",
+  " explained",
+  " reviews",
+  " online",
+  " guide",
+  " tips",
+  " list",
+];
+const MODIFIER_PREFIXES = ["how to get "];
+
+function stripKnownModifiers(input: string): string {
+  let s = input;
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const suf of MODIFIER_SUFFIXES) {
+      if (s.endsWith(suf)) {
+        s = s.slice(0, -suf.length).trim();
+        changed = true;
+      }
+    }
+    for (const pre of MODIFIER_PREFIXES) {
+      if (s.startsWith(pre)) {
+        s = s.slice(pre.length).trim();
+        changed = true;
+      }
+    }
+    const withoutYear = s.replace(/\s+\d{4}$/, "");
+    if (withoutYear !== s) {
+      s = withoutYear;
+      changed = true;
+    }
+  }
+  return s;
+}
+
 function extractCore(title: string, tags: string[]): string[] {
-  const words = title
-    .toLowerCase()
+  const words = stripKnownModifiers(title.toLowerCase())
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
     .filter((w) => w.length > 2 && !STOPWORDS.has(w) && !isNumeric(w));
@@ -176,3 +222,14 @@ export function generateKeywords(
 
 export const KEYWORD_DISCLAIMER =
   "Estimated keyword ideas generated from the article title. Figures are illustrative, not live Google data. Connect the Google Ads API for production data.";
+
+// Random N-of-pool sample (Fisher-Yates partial shuffle), used to pick a
+// fresh-looking "popular searches" set on every render.
+export function sampleKeywords<T>(pool: T[], n: number): T[] {
+  const arr = pool.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, n);
+}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listPublishedByType, tagList, type PostType } from "@/lib/posts";
 import { CATEGORIES, categoryBySlug } from "@/lib/categories";
+import { generateKeywords, sampleKeywords } from "@/lib/keywords";
 
 // Shared listing rendering for both /guides and /blog — same layout, only the
 // post type, base path, and heading copy differ.
@@ -12,6 +13,7 @@ export default async function PostListing({
   emptyLabel,
   category,
   showCategoryFilter = true,
+  showPopularSearches = false,
 }: {
   type: PostType;
   basePath: string; // "/guides" or "/blog"
@@ -20,6 +22,7 @@ export default async function PostListing({
   emptyLabel: string;
   category?: string;
   showCategoryFilter?: boolean;
+  showPopularSearches?: boolean;
 }) {
   // Blog is a flat, uncategorized feed — ignore any ?category= param there.
   const active = showCategoryFilter && category ? categoryBySlug(category) : undefined;
@@ -27,8 +30,13 @@ export default async function PostListing({
   const all = await listPublishedByType(type);
   const posts = active ? all.filter((p) => p.category === active.slug) : all;
 
-  return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+  // A random 5-of-pool sample, reshuffled on every render, so the sidebar
+  // doesn't show the same list of "popular" terms every time.
+  const popularPool = showPopularSearches ? generateKeywords("jobs near me", [], Date.now(), 20) : [];
+  const popularSearches = sampleKeywords(popularPool, Math.min(5, popularPool.length));
+
+  const main = (
+    <div className="min-w-0">
       <h1 className="text-3xl font-bold text-gray-900">
         {active ? `${active.icon} ${active.name}` : heading}
       </h1>
@@ -126,6 +134,37 @@ export default async function PostListing({
           })}
         </div>
       )}
+    </div>
+  );
+
+  if (!showPopularSearches) {
+    return <div className="mx-auto max-w-5xl px-4 py-10">{main}</div>;
+  }
+
+  return (
+    <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+      {main}
+
+      <aside>
+        {popularSearches.length > 0 && (
+          <div className="rounded-2xl border bg-white p-5">
+            <h3 className="mb-1 font-bold text-gray-900">Popular searches</h3>
+            <ul className="divide-y">
+              {popularSearches.map((k) => (
+                <li key={k.term}>
+                  <Link
+                    href={`/search?q=${encodeURIComponent(k.term)}`}
+                    className="flex items-center justify-between py-2.5 text-sm text-blue-600 hover:underline"
+                  >
+                    {k.term}
+                    <span className="text-gray-300">›</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </aside>
     </div>
   );
 }
