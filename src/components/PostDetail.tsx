@@ -60,20 +60,22 @@ export default async function PostDetail({
     Date.now(),
     20
   );
-  // Two independent samples from the same pool, so the sidebar list and the
-  // in-article block don't just repeat the same five terms twice.
+  // Three independent samples from the same pool, so the sidebar list and the
+  // in-article blocks don't just repeat the same terms.
   const popularSidebar = sampleKeywords(popularPool, Math.min(5, popularPool.length));
   const popularInline = sampleKeywords(popularPool, Math.min(6, popularPool.length));
+  const trendingInline = sampleKeywords(popularPool, Math.min(6, popularPool.length));
 
-  // Split the body into four parts around three randomized cut points, so
-  // "Related Searches" (x2) and the in-article "Popular Searches" block each
+  // Split the body into five parts around four randomized cut points, so
+  // "Related Searches" (x2), "Popular Searches", and "Trending Searches" each
   // land in a different spot on every render instead of a fixed position.
   const paragraphs = post.content.split(/\n{2,}/).filter((p) => p.trim());
-  const [cut1, cut2, cut3] = randomInsertPoints(paragraphs.length, 3);
+  const [cut1, cut2, cut3, cut4] = randomInsertPoints(paragraphs.length, 4);
   const part1 = paragraphs.slice(0, cut1);
   const part2 = paragraphs.slice(cut1, cut2);
   const part3 = paragraphs.slice(cut2, cut3);
-  const part4 = paragraphs.slice(cut3);
+  const part4 = paragraphs.slice(cut3, cut4);
+  const part5 = paragraphs.slice(cut4);
   const readMins = Math.max(1, Math.round(post.content.split(/\s+/).length / 200));
 
   const jsonLd = {
@@ -181,6 +183,32 @@ export default async function PostDetail({
               <p key={`c-${i}`}>{p}</p>
             ))}
 
+            {/* Trending searches — solid blue buttons, chevrons both sides. */}
+            {trendingInline.length > 0 && (
+              <section className="my-9">
+                <h2 className="mb-5 text-sm font-medium text-gray-400">Trending Searches</h2>
+                <div className="space-y-3">
+                  {trendingInline.map((k) => (
+                    <Link
+                      key={k.term}
+                      href={`/search?q=${encodeURIComponent(k.term)}`}
+                      className="flex items-center justify-between gap-3 rounded-lg bg-blue-600 px-5 py-4 text-left font-bold text-white transition hover:bg-blue-700"
+                    >
+                      <span className="flex min-w-0 items-center gap-2.5">
+                        <span className="shrink-0 text-blue-200">›</span>
+                        <span className="truncate">{k.term}</span>
+                      </span>
+                      <span className="shrink-0 text-lg text-blue-200">›</span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {part4.map((p, i) => (
+              <p key={`d-${i}`}>{p}</p>
+            ))}
+
             {/* Related searches #2 */}
             <RelatedSearchSection
               title={post.title}
@@ -190,8 +218,8 @@ export default async function PostDetail({
               showPreview={settings.show_keyword_preview !== "false"}
             />
 
-            {part4.map((p, i) => (
-              <p key={`d-${i}`}>{p}</p>
+            {part5.map((p, i) => (
+              <p key={`e-${i}`}>{p}</p>
             ))}
 
             {paragraphs.length === 0 && (

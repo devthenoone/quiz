@@ -221,27 +221,23 @@ export default function SearchExperience({ recommended }: { recommended: ReactNo
         )}
 
         {trending.length > 0 && (
-          <div className="rounded-2xl border bg-white p-5">
-            <h3 className="font-bold text-gray-900">Trending Searches</h3>
-            <p className="mb-2 text-xs text-gray-400">
-              {activeQuery ? `Trending around "${activeQuery}"` : "Trending job searches"}
-            </p>
-            <ul className="divide-y">
-              {trending.map((k, i) => (
-                <li key={k.term}>
-                  <button
-                    onClick={() => search(k.term)}
-                    className="flex w-full items-center gap-3 py-2.5 text-left text-sm text-gray-700 hover:text-blue-600"
-                  >
-                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-gray-100 text-[11px] font-semibold text-gray-500">
-                      {i + 1}
-                    </span>
-                    <span className="min-w-0 flex-1 truncate">{k.term}</span>
-                    <span className="shrink-0 text-gray-300">›</span>
-                  </button>
-                </li>
+          <div>
+            <h3 className="mb-3 text-sm font-medium text-gray-400">Trending Searches</h3>
+            <div className="space-y-3">
+              {trending.map((k) => (
+                <button
+                  key={k.term}
+                  onClick={() => search(k.term)}
+                  className="flex w-full items-center justify-between gap-3 rounded-lg bg-blue-600 px-5 py-4 text-left font-bold text-white transition hover:bg-blue-700"
+                >
+                  <span className="flex min-w-0 items-center gap-2.5">
+                    <span className="shrink-0 text-blue-200">›</span>
+                    <span className="truncate">{k.term}</span>
+                  </span>
+                  <span className="shrink-0 text-lg text-blue-200">›</span>
+                </button>
               ))}
-            </ul>
+            </div>
           </div>
         )}
 
