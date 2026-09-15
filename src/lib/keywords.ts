@@ -58,6 +58,29 @@ const MODIFIERS: { word: (t: string) => string; intent: Intent }[] = [
   { word: (t) => `${t} part time`, intent: "Transactional" },
 ];
 
+// Full-phrase query templates for "Trending Searches" and "Popular Searches" —
+// modeled on how people actually type into Google: lowercase, terse, often
+// not a fully "proper" sentence, closer to real autocomplete/search-console
+// query data than a formal question. ("Related Searches" keeps the shorter
+// MODIFIERS fragments above, which is closer to how search engines show
+// related terms.)
+const SENTENCE_MODIFIERS: { word: (t: string) => string; intent: Intent }[] = [
+  { word: (t) => `how to get ${t} near me`, intent: "Informational" },
+  { word: (t) => `${t} hiring near me`, intent: "Transactional" },
+  { word: (t) => `${t} no experience`, intent: "Informational" },
+  { word: (t) => `how to apply for ${t}`, intent: "Transactional" },
+  { word: (t) => `${t} salary`, intent: "Informational" },
+  { word: (t) => `is it hard to get ${t}`, intent: "Informational" },
+  { word: (t) => `${t} interview questions`, intent: "Informational" },
+  { word: (t) => `${t} requirements`, intent: "Informational" },
+  { word: (t) => `${t} for students`, intent: "Informational" },
+  { word: (t) => `how much do ${t} pay`, intent: "Informational" },
+  { word: (t) => `${t} hiring today`, intent: "Transactional" },
+  { word: (t) => `${t} qualifications`, intent: "Informational" },
+  { word: (t) => `fastest way to get ${t}`, intent: "Informational" },
+  { word: (t) => `${t} part time near me`, intent: "Transactional" },
+];
+
 // Deterministic 32-bit hash so a term always maps to the same base metrics.
 function hash(str: string): number {
   let h = 2166136261;
@@ -155,6 +178,27 @@ export function generateKeywords(
   tick = 0,
   limit = 10
 ): Keyword[] {
+  return buildKeywords(title, tags, tick, limit, MODIFIERS);
+}
+
+// Same idea as generateKeywords, but produces full natural-language query
+// phrases instead of short fragments — see SENTENCE_MODIFIERS above.
+export function generateKeywordSentences(
+  title: string,
+  tags: string[] = [],
+  tick = 0,
+  limit = 10
+): Keyword[] {
+  return buildKeywords(title, tags, tick, limit, SENTENCE_MODIFIERS);
+}
+
+function buildKeywords(
+  title: string,
+  tags: string[],
+  tick: number,
+  limit: number,
+  modifiers: { word: (t: string) => string; intent: Intent }[]
+): Keyword[] {
   const cores = extractCore(title, tags);
   if (cores.length === 0) return [];
 
@@ -162,7 +206,7 @@ export function generateKeywords(
   const seen = new Set<string>();
 
   for (const core of cores) {
-    for (const mod of MODIFIERS) {
+    for (const mod of modifiers) {
       const term = mod.word(core).trim();
       if (seen.has(term) || term.length > 60) continue;
       seen.add(term);

@@ -62,34 +62,48 @@ export default function SearchExperience({ recommended }: { recommended: ReactNo
   }, []);
 
   // Fetch related + trending suggestions for whatever query is currently
-  // active — both derived from ONE pool for that query, so "Trending" stays
-  // relevant to what was actually searched instead of a fixed generic list.
+  // active. Related/People-also stay short fragments (closer to how real
+  // search engines show related terms); Trending uses "sentence" mode for
+  // fuller, natural-language queries — so they're two separate requests.
   useEffect(() => {
     const seed = activeQuery || DEFAULT_SEED;
     let cancelled = false;
+
+    // Short queries (e.g. a single word) only generate a small pool — too few
+    // terms to hand each section a strictly non-overlapping slice. Shuffle
+    // once and wrap around per section instead, so every section still gets
+    // filled (small pools may share a few terms; large pools won't overlap).
+    function distribute(pool: Keyword[]) {
+      const shuffled = sampleKeywords(pool, pool.length);
+      return (offset: number, count: number) =>
+        shuffled.length === 0
+          ? []
+          : Array.from(
+              { length: Math.min(count, shuffled.length) },
+              (_, i) => shuffled[(offset + i) % shuffled.length]
+            );
+    }
+
     fetch(`/api/keywords?title=${encodeURIComponent(seed)}&limit=24`, { cache: "no-store" })
       .then((r) => r.json())
       .then((json) => {
         if (cancelled) return;
-        const pool: Keyword[] = json.keywords ?? [];
-        // Short queries (e.g. a single word) only generate a small pool — too
-        // few terms to hand each section a strictly non-overlapping slice.
-        // Shuffle once and wrap around per section instead, so every section
-        // still gets filled (small pools may share a few terms; large pools
-        // won't overlap at all).
-        const shuffled = sampleKeywords(pool, pool.length);
-        const take = (offset: number, count: number) =>
-          shuffled.length === 0
-            ? []
-            : Array.from(
-                { length: Math.min(count, shuffled.length) },
-                (_, i) => shuffled[(offset + i) % shuffled.length]
-              );
+        const take = distribute(json.keywords ?? []);
         setRelated(take(0, 6));
-        setTrending(take(6, 10));
-        setPeopleAlso(take(16, 8));
+        setPeopleAlso(take(6, 8));
       })
       .catch(() => {});
+
+    fetch(`/api/keywords?title=${encodeURIComponent(seed)}&mode=sentence&limit=16`, {
+      cache: "no-store",
+    })
+      .then((r) => r.json())
+      .then((json) => {
+        if (cancelled) return;
+        setTrending(distribute(json.keywords ?? [])(0, 10));
+      })
+      .catch(() => {});
+
     return () => {
       cancelled = true;
     };

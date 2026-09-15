@@ -3,8 +3,7 @@ import { tagList, type PostType } from "@/lib/posts";
 import { getSettings } from "@/lib/settings";
 import { getActiveAdSenseCreds } from "@/lib/ads";
 import { cseUrl } from "@/lib/cse";
-import { generateKeywords, sampleKeywords } from "@/lib/keywords";
-import { categoryBySlug } from "@/lib/categories";
+import { generateKeywordSentences, sampleKeywords } from "@/lib/keywords";
 import type { PostRow } from "@/lib/db";
 import RelatedSearchSection from "@/components/RelatedSearchSection";
 
@@ -50,16 +49,12 @@ export default async function PostDetail({
   const settings = await getSettings(); // admin-managed preview toggle
   const ads = await getActiveAdSenseCreds(); // default engine → site-wide → legacy keys
 
-  // A generic "popular searches" list, seeded from the category (not the
-  // article title, so it reads distinct from the in-article "Related
-  // Searches") — a random 5-of-pool sample, reshuffled on every render.
-  const categoryName = categoryBySlug(post.category)?.name ?? "";
-  const popularPool = generateKeywords(
-    "jobs near me",
-    [categoryName].filter(Boolean),
-    Date.now(),
-    20
-  );
+  // A "popular searches" pool of natural, full-phrase queries (not the short
+  // fragments "Related Searches" uses) — seeded from THIS article's own title
+  // and tags, same as Related Searches, so the suggestions are actually about
+  // what the article covers rather than a generic fallback topic. A random
+  // sample is reshuffled on every render.
+  const popularPool = generateKeywordSentences(post.title, tagList(post.tags), Date.now(), 24);
   // Three independent samples from the same pool, so the sidebar list and the
   // in-article blocks don't just repeat the same terms.
   const popularSidebar = sampleKeywords(popularPool, Math.min(5, popularPool.length));
