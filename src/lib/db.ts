@@ -36,8 +36,20 @@ function createDb(): Client {
   return createClient(authToken ? { url, authToken } : { url });
 }
 
-export const db = globalForDb.__db ?? createDb();
-if (process.env.NODE_ENV !== "production") globalForDb.__db = db;
+// Created lazily on first use, so importing this module (e.g. while `next build`
+// collects page data) never needs the database env vars.
+function getDb(): Client {
+  if (!globalForDb.__db) globalForDb.__db = createDb();
+  return globalForDb.__db;
+}
+
+export const db = new Proxy({} as Client, {
+  get(_target, prop) {
+    const client = getDb();
+    const value = Reflect.get(client, prop, client);
+    return typeof value === "function" ? value.bind(client) : value;
+  },
+});
 
 // Schema — idempotent. Runs once per process (cached promise) before queries,
 // so a fresh Turso database is set up automatically with no manual migration.
