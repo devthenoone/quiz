@@ -33,6 +33,6 @@ export default async function GuidePost({ params }: Props) {
     .slice(0, 5);
 
   return (
-    <PostDetail post={post} recent={recent} basePath="/guides" listLabel="All guides" />
+    <PostDetail post={post} recent={recent} basePath="/guides" listLabel="All quizzes" />
   );
 }

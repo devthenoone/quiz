@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { listPublished, postHref } from "@/lib/posts";
 import { CATEGORIES } from "@/lib/categories";
-import GoogleJobSearch from "@/components/GoogleJobSearch";
+import GoogleQuizSearch from "@/components/GoogleQuizSearch";
 
 // Cached (ISR) instead of force-dynamic: lets Next.js serve this instantly and
 // prefetch it, instead of a full server render on every navigation. New/edited
@@ -18,13 +18,13 @@ export default async function Home() {
       <section className="bg-gradient-to-b from-blue-50 to-white px-4 py-14">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
-            Find Jobs Near You
+            Test Your Knowledge at Quizy Zone
           </h1>
           <p className="mt-3 text-gray-600">
-            Search thousands of jobs from top employers in your area.
+            Thousands of fun quizzes and trivia questions across every topic — from science and history to sports, movies, and music.
           </p>
           <div className="mt-6">
-            <GoogleJobSearch variant="hero" />
+            <GoogleQuizSearch variant="hero" />
           </div>
         </div>
       </section>
@@ -34,7 +34,7 @@ export default async function Home() {
         <main className="min-w-0 space-y-10">
           {/* Popular categories */}
           <section>
-            <h2 className="mb-4 text-xl font-bold text-gray-900">Popular Job Categories</h2>
+            <h2 className="mb-4 text-xl font-bold text-gray-900">Popular Quiz Categories</h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {CATEGORIES.map((c) => {
                 const count = posts.filter((p) => p.category === c.slug).length;
@@ -53,7 +53,7 @@ export default async function Home() {
                       {c.name}
                     </div>
                     <div className="mt-0.5 text-xs text-gray-500">
-                      {count} {count === 1 ? "Article" : "Articles"}
+                      {count} {count === 1 ? "Quiz" : "Quizzes"}
                     </div>
                   </Link>
                 );
@@ -69,10 +69,10 @@ export default async function Home() {
             </div>
           </section>
 
-          {/* Career guides */}
+          {/* Latest quizzes */}
           {guides.length > 0 && (
             <section>
-              <h2 className="mb-4 text-xl font-bold text-gray-900">Latest Career Guides</h2>
+              <h2 className="mb-4 text-xl font-bold text-gray-900">Latest Quizzes</h2>
               <div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
                 {guides.map((g, i) => (
                   <Link
@@ -104,10 +104,10 @@ export default async function Home() {
                 <span className="text-3xl">✉️</span>
                 <div>
                   <h3 className="font-bold text-gray-900">
-                    Get the latest job updates in your inbox
+                    Get a new quiz in your inbox every week
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Subscribe now and never miss any opportunity.
+                    Fresh trivia, fun facts, and brain teasers — never miss a challenge.
                   </p>
                 </div>
               </div>
@@ -129,9 +129,9 @@ export default async function Home() {
         {/* Sidebar */}
         <aside className="space-y-6">
           <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 p-5 text-white">
-            <h3 className="text-base font-bold">Get job alerts</h3>
+            <h3 className="text-base font-bold">Daily quiz alerts</h3>
             <p className="mt-1 text-xs text-white/80">
-              New openings and career tips, straight to your inbox.
+              New quizzes and trivia challenges, straight to your inbox.
             </p>
             <form action="#" className="mt-3 space-y-2">
               <input
@@ -147,7 +147,7 @@ export default async function Home() {
 
           {guides.length > 0 && (
             <div className="rounded-2xl border bg-white p-5">
-              <h3 className="mb-3 font-bold text-gray-900">Recent Guides</h3>
+              <h3 className="mb-3 font-bold text-gray-900">Recent Quizzes</h3>
               <ul className="space-y-3">
                 {guides.map((g, i) => (
                   <li key={g.id}>

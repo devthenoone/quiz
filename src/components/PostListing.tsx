@@ -32,7 +32,7 @@ export default async function PostListing({
 
   // A random 5-of-pool sample, reshuffled on every render, so the sidebar
   // doesn't show the same list of "popular" terms every time.
-  const popularPool = showPopularSearches ? generateKeywords("jobs near me", [], Date.now(), 20) : [];
+  const popularPool = showPopularSearches ? generateKeywords("general knowledge quiz", [], Date.now(), 20) : [];
   const popularSearches = sampleKeywords(popularPool, Math.min(5, popularPool.length));
 
   const main = (
@@ -41,7 +41,7 @@ export default async function PostListing({
         {active ? `${active.icon} ${active.name}` : heading}
       </h1>
       <p className="mt-2 text-gray-600">
-        {active ? `Articles and guides in ${active.name}.` : description}
+        {active ? `Quizzes and trivia in ${active.name}.` : description}
       </p>
 
       {showCategoryFilter && (
@@ -80,7 +80,7 @@ export default async function PostListing({
         <div className="mt-8 rounded-xl border border-dashed bg-white p-10 text-center text-gray-500">
           {active ? (
             <>
-              No articles in <strong>{active.name}</strong> yet.{" "}
+              No quizzes in <strong>{active.name}</strong> yet.{" "}
               <Link href={basePath} className="font-medium text-blue-600 hover:underline">
                 View all
               </Link>

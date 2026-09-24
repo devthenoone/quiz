@@ -4,15 +4,15 @@ import GoogleWordmark from "./GoogleWordmark";
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "Search", href: "/search" },
-  { label: "Guides", href: "/guides" },
+  { label: "Quizzes", href: "/guides" },
   { label: "Blog", href: "/blog" },
   { label: "About Us", href: "/about" },
 ];
-const employers = [
-  { label: "Post a Job", href: "/contact" },
-  { label: "Browse Resumes", href: "#" },
-  { label: "Pricing", href: "#" },
-  { label: "Resources", href: "/guides" },
+const explore = [
+  { label: "General Knowledge", href: "/guides?category=general-knowledge" },
+  { label: "Science Quizzes", href: "/guides?category=science" },
+  { label: "History Quizzes", href: "/guides?category=history" },
+  { label: "Suggest a Quiz", href: "/contact" },
 ];
 const support = [
   { label: "Contact Us", href: "/contact" },
@@ -28,12 +28,12 @@ export default function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-1">
           <div className="text-lg font-extrabold">
-            <span className="text-blue-600">Jobs</span>
-            <span className="text-gray-900">NearMe</span>
+            <span className="text-blue-600">Quizy</span>
+            <span className="text-gray-900"> Zone</span>
           </div>
           <p className="mt-3 text-sm text-gray-500">
-            Find jobs near you from top employers. Search thousands of job listings across
-            all industries and locations.
+            Fun quizzes, trivia, and brain teasers for curious minds. Test your knowledge
+            across science, history, geography, sports, movies, and more.
           </p>
           <div className="mt-4 flex gap-2">
             {["f", "t", "in", "ig"].map((s) => (
@@ -48,13 +48,13 @@ export default function SiteFooter() {
         </div>
 
         <FooterCol title="Quick Links" links={quickLinks} />
-        <FooterCol title="For Employers" links={employers} />
+        <FooterCol title="Explore Quizzes" links={explore} />
         <FooterCol title="Support" links={support} />
 
         <div>
           <h4 className="mb-3 text-sm font-bold text-gray-900">Newsletter</h4>
           <p className="text-sm text-gray-500">
-            Subscribe to get the latest job updates and career tips.
+            Subscribe to get new quizzes, trivia challenges, and fun facts.
           </p>
           <form action="#" className="mt-3 space-y-2">
             <input
@@ -71,7 +71,7 @@ export default function SiteFooter() {
 
       <div className="bg-[#0b1b34] text-white">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs text-white/70 sm:flex-row">
-          <span>© {new Date().getFullYear()} JobsNearMe. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Quizy Zone. All rights reserved.</span>
           <span>
             Enhanced by <GoogleWordmark />
           </span>

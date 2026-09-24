@@ -1,4 +1,4 @@
-# Hosting brief — JobsNearMe (for a deployment agent)
+# Hosting brief — Quizy Zone (for a deployment agent)
 
 A complete, unambiguous spec to deploy this application. Follow it exactly.
 
@@ -55,20 +55,20 @@ npm run start     # starts the production server on $PORT (default 3000)
 Recommended process manager (keep-alive + restart on boot). A PM2 config is included:
 ```
 npm install -g pm2
-pm2 start ecosystem.config.js     # runs `next start`, name "jobsnearme", PORT 3000
+pm2 start ecosystem.config.js     # runs `next start`, name "quizyzone", PORT 3000
 pm2 save
 pm2 startup                       # then run the printed command
 ```
 
 ## 6. Docker (alternative — Dockerfile + .dockerignore included)
 ```
-docker build -t jobsnearme .
-docker run -d --name jobsnearme -p 3000:3000 \
+docker build -t quizyzone .
+docker run -d --name quizyzone -p 3000:3000 \
   -e AUTH_SECRET="<random>" \
   -e NEXT_PUBLIC_SITE_URL="https://example.com" \
   -e NEXT_PUBLIC_SHOW_KEYWORD_PREVIEW="false" \
-  -v jobsnearme_data:/app/data \
-  jobsnearme
+  -v quizyzone_data:/app/data \
+  quizyzone
 ```
 - MUST mount a persistent volume at **`/app/data`** or all content is lost on redeploy.
 - Image builds Node 20 + build tools; final CMD is `next start`.
@@ -110,7 +110,7 @@ node scripts/create-user.mjs <email> <password> "<Name>"
 # upload new code (or git pull)
 npm ci
 npm run build
-pm2 restart jobsnearme      # or: docker build ... && docker run ...
+pm2 restart quizyzone      # or: docker build ... && docker run ...
 ```
 
 ## 10. Ports & networking summary

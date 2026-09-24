@@ -2,7 +2,7 @@
 module.exports = {
   apps: [
     {
-      name: "jobsnearme",
+      name: "quizyzone",
       script: "node_modules/next/dist/bin/next",
       args: "start",
       cwd: __dirname,

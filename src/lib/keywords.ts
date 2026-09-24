@@ -38,24 +38,24 @@ const STOPWORDS = new Set([
 const isNumeric = (w: string) => /^\d+$/.test(w);
 
 // Modifiers that read naturally when appended to a full topic PHRASE
-// (e.g. "business registration qatar"). They are chosen to stay grammatical so
-// we never produce gibberish like "qatar near me" or "registration vs".
+// (e.g. "world history quiz"). They are chosen to stay grammatical so
+// we never produce gibberish like "capital quiz facts" or "history vs".
 const MODIFIERS: { word: (t: string) => string; intent: Intent }[] = [
   { word: (t) => t, intent: "Informational" }, // the bare topic
-  { word: (t) => `best ${t}`, intent: "Commercial" },
-  { word: (t) => `top ${t}`, intent: "Commercial" },
-  { word: (t) => `${t} online`, intent: "Transactional" },
-  { word: (t) => `${t} near me`, intent: "Transactional" },
-  { word: (t) => `${t} 2026`, intent: "Informational" },
+  { word: (t) => `${t} quiz`, intent: "Informational" },
+  { word: (t) => `best ${t} quiz`, intent: "Commercial" },
+  { word: (t) => `${t} trivia`, intent: "Informational" },
+  { word: (t) => `${t} quiz online`, intent: "Transactional" },
+  { word: (t) => `${t} quiz 2026`, intent: "Informational" },
   { word: (t) => `${t} for beginners`, intent: "Informational" },
-  { word: (t) => `${t} reviews`, intent: "Commercial" },
-  { word: (t) => `${t} list`, intent: "Informational" },
-  { word: (t) => `${t} tips`, intent: "Informational" },
-  { word: (t) => `${t} guide`, intent: "Informational" },
-  { word: (t) => `${t} explained`, intent: "Informational" },
-  { word: (t) => `how to get ${t}`, intent: "Informational" },
-  { word: (t) => `${t} full time`, intent: "Transactional" },
-  { word: (t) => `${t} part time`, intent: "Transactional" },
+  { word: (t) => `${t} for kids`, intent: "Informational" },
+  { word: (t) => `${t} questions`, intent: "Informational" },
+  { word: (t) => `${t} answers`, intent: "Informational" },
+  { word: (t) => `${t} mcq`, intent: "Informational" },
+  { word: (t) => `${t} facts`, intent: "Informational" },
+  { word: (t) => `${t} test`, intent: "Transactional" },
+  { word: (t) => `${t} quiz with answers`, intent: "Informational" },
+  { word: (t) => `hard ${t} questions`, intent: "Informational" },
 ];
 
 // Full-phrase query templates for "Trending Searches" and "Popular Searches" —
@@ -65,20 +65,20 @@ const MODIFIERS: { word: (t: string) => string; intent: Intent }[] = [
 // MODIFIERS fragments above, which is closer to how search engines show
 // related terms.)
 const SENTENCE_MODIFIERS: { word: (t: string) => string; intent: Intent }[] = [
-  { word: (t) => `how to get ${t} near me`, intent: "Informational" },
-  { word: (t) => `${t} hiring near me`, intent: "Transactional" },
-  { word: (t) => `${t} no experience`, intent: "Informational" },
-  { word: (t) => `how to apply for ${t}`, intent: "Transactional" },
-  { word: (t) => `${t} salary`, intent: "Informational" },
-  { word: (t) => `is it hard to get ${t}`, intent: "Informational" },
-  { word: (t) => `${t} interview questions`, intent: "Informational" },
-  { word: (t) => `${t} requirements`, intent: "Informational" },
-  { word: (t) => `${t} for students`, intent: "Informational" },
-  { word: (t) => `how much do ${t} pay`, intent: "Informational" },
-  { word: (t) => `${t} hiring today`, intent: "Transactional" },
-  { word: (t) => `${t} qualifications`, intent: "Informational" },
-  { word: (t) => `fastest way to get ${t}`, intent: "Informational" },
-  { word: (t) => `${t} part time near me`, intent: "Transactional" },
+  { word: (t) => `${t} quiz questions and answers`, intent: "Informational" },
+  { word: (t) => `easy ${t} trivia questions`, intent: "Informational" },
+  { word: (t) => `hard ${t} quiz questions`, intent: "Informational" },
+  { word: (t) => `${t} quiz for kids`, intent: "Informational" },
+  { word: (t) => `${t} multiple choice questions`, intent: "Informational" },
+  { word: (t) => `fun ${t} facts`, intent: "Informational" },
+  { word: (t) => `${t} quiz with answers pdf`, intent: "Transactional" },
+  { word: (t) => `${t} trivia night questions`, intent: "Informational" },
+  { word: (t) => `how to get better at ${t} trivia`, intent: "Informational" },
+  { word: (t) => `${t} quiz for students`, intent: "Informational" },
+  { word: (t) => `${t} true or false questions`, intent: "Informational" },
+  { word: (t) => `${t} quiz online free`, intent: "Transactional" },
+  { word: (t) => `test your ${t} knowledge`, intent: "Transactional" },
+  { word: (t) => `${t} questions for adults`, intent: "Informational" },
 ];
 
 // Deterministic 32-bit hash so a term always maps to the same base metrics.
@@ -97,24 +97,25 @@ function pick<T>(arr: T[], seed: number): T {
 
 // Trailing/leading phrases that MODIFIERS itself appends/prepends. Suggestions
 // are often re-fed back in as the next title (e.g. clicking a suggestion),
-// so without this, re-deriving from an already-modified phrase like "car
-// service near me" would naively word-slice it to "car service near" (the
-// word-count slice below cuts off "me"), then bolt another modifier onto
-// that fragment — producing nonsense like "car service near for beginners".
+// so without this, re-deriving from an already-modified phrase like "world
+// history quiz with answers" would naively word-slice it to "world history
+// quiz", then bolt another modifier onto that fragment — producing nonsense
+// like "world history quiz for kids quiz".
 // Stripping known modifier phrases first recovers the clean base topic.
 const MODIFIER_SUFFIXES = [
+  " quiz with answers",
+  " quiz online",
   " for beginners",
-  " near me",
-  " full time",
-  " part time",
-  " explained",
-  " reviews",
-  " online",
-  " guide",
-  " tips",
-  " list",
+  " for kids",
+  " questions",
+  " answers",
+  " trivia",
+  " facts",
+  " quiz",
+  " test",
+  " mcq",
 ];
-const MODIFIER_PREFIXES = ["how to get "];
+const MODIFIER_PREFIXES = ["best ", "hard "];
 
 function stripKnownModifiers(input: string): string {
   let s = input;
@@ -148,7 +149,7 @@ function extractCore(title: string, tags: string[]): string[] {
     .split(/\s+/)
     .filter((w) => w.length > 2 && !STOPWORDS.has(w) && !isNumeric(w));
 
-  // Build cores from MULTI-WORD phrases only — never lone words like "qatar",
+  // Build cores from MULTI-WORD phrases only — never lone words like "capital",
   // which would create nonsense when modifiers are appended. Tags (author-chosen)
   // are trusted as-is.
   const cores = new Set<string>();

@@ -7,7 +7,7 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "News, tips, and updates on finding jobs near you.",
+  description: "Fun facts, trivia tips, and updates from Quizy Zone.",
 };
 
 export default function BlogPage() {
@@ -15,8 +15,8 @@ export default function BlogPage() {
     <PostListing
       type="blog"
       basePath="/blog"
-      heading="Jobs Near Me — Blog"
-      description="News, tips, and updates on finding jobs near you."
+      heading="Quizy Zone — Blog"
+      description="Fun facts, trivia tips, and updates from Quizy Zone."
       emptyLabel="No blog posts yet."
       showCategoryFilter={false}
       showPopularSearches

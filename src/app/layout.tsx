@@ -7,14 +7,14 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "JobsNearMe — find local jobs fast",
-    template: "%s — JobsNearMe",
+    default: "Quizy Zone — fun quizzes & trivia for curious minds",
+    template: "%s — Quizy Zone",
   },
   description:
-    "Guides to finding jobs near you — local, part-time, warehouse, and remote roles, with tips on how to apply and get hired fast.",
+    "Play free quizzes and trivia on general knowledge, science, history, geography, sports, movies, music, and technology — with answers and fun facts.",
   openGraph: {
     type: "website",
-    siteName: "JobsNearMe",
+    siteName: "Quizy Zone",
     url: siteUrl,
   },
   robots: { index: true, follow: true },

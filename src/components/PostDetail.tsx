@@ -156,7 +156,7 @@ export default async function PostDetail({
                     <Link
                       key={k.term}
                       href={`/search?q=${encodeURIComponent(k.term)}`}
-                      className="group flex items-center justify-between gap-3 rounded-full bg-gray-100 px-5 py-4 text-left transition hover:bg-gray-200"
+                      className="group flex items-center justify-between gap-3 rounded-full bg-gray-100 px-5 py-4 text-left !no-underline transition hover:bg-gray-200"
                     >
                       <span className="flex min-w-0 items-center gap-3">
                         <svg viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px] shrink-0 text-gray-400" aria-hidden="true">
@@ -187,11 +187,11 @@ export default async function PostDetail({
                     <Link
                       key={k.term}
                       href={`/search?q=${encodeURIComponent(k.term)}`}
-                      className="flex items-center justify-between gap-3 rounded-lg bg-blue-600 px-5 py-4 text-left font-bold text-white transition hover:bg-blue-700"
+                      className="flex items-center justify-between gap-3 rounded-lg bg-blue-600 px-5 py-4 text-left font-bold !text-white !no-underline transition hover:bg-blue-700"
                     >
                       <span className="flex min-w-0 items-center gap-2.5">
                         <span className="shrink-0 text-blue-200">›</span>
-                        <span className="truncate">{k.term}</span>
+                        <span className="truncate text-white">{k.term}</span>
                       </span>
                       <span className="shrink-0 text-lg text-blue-200">›</span>
                     </Link>
@@ -218,7 +218,7 @@ export default async function PostDetail({
             ))}
 
             {paragraphs.length === 0 && (
-              <p className="text-gray-400">This post has no content yet.</p>
+              <p className="text-gray-400">This quiz has no content yet.</p>
             )}
           </div>
 
@@ -306,22 +306,22 @@ export default async function PostDetail({
                 key="cta"
                 className="rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 p-6 text-white"
               >
-                <h3 className="text-lg font-bold">Looking for a job?</h3>
+                <h3 className="text-lg font-bold">Ready for a challenge?</h3>
                 <p className="mt-1 text-sm text-white/80">
-                  Search thousands of roles near you, powered by Google.
+                  Explore thousands of quizzes and trivia questions, powered by Google.
                 </p>
                 <Link
                   href="/"
                   className="mt-4 inline-block rounded-lg bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-gray-100"
                 >
-                  Find jobs near you →
+                  Play more quizzes →
                 </Link>
               </div>,
 
               <div key="alerts" className="rounded-2xl border bg-white p-5">
-                <h3 className="mb-1 font-bold text-gray-900">Get job alerts</h3>
+                <h3 className="mb-1 font-bold text-gray-900">Get quiz alerts</h3>
                 <p className="mb-3 text-xs text-gray-500">
-                  New openings and career tips in your inbox.
+                  New quizzes and fun facts in your inbox.
                 </p>
                 <form action="#" className="space-y-2">
                   <input

@@ -8,7 +8,7 @@ import GoogleWordmark from "@/components/GoogleWordmark";
 import { sampleKeywords, type Keyword } from "@/lib/keywords";
 
 // Seed used for Trending/Related before the visitor has searched anything yet.
-const DEFAULT_SEED = "jobs near me";
+const DEFAULT_SEED = "general knowledge quiz";
 
 function SearchIcon({ className = "" }: { className?: string }) {
   return (
@@ -142,7 +142,7 @@ export default function SearchExperience({ recommended }: { recommended: ReactNo
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search jobs, companies, keywords…"
+              placeholder="Search quizzes, topics, trivia…"
               className="w-full rounded-full py-2.5 pl-11 pr-4 text-sm outline-none"
             />
           </div>
@@ -258,12 +258,12 @@ export default function SearchExperience({ recommended }: { recommended: ReactNo
         {recommended}
 
         <div className="rounded-2xl bg-blue-50 p-5 text-center">
-          <p className="text-sm font-semibold text-gray-900">Back to JobsNearMe</p>
+          <p className="text-sm font-semibold text-gray-900">Back to Quizy Zone</p>
           <a
             href="/"
             className="mt-2 inline-block rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
           >
-            Browse all jobs →
+            Browse all quizzes →
           </a>
         </div>
       </aside>

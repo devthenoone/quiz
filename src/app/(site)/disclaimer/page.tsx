@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Disclaimer",
-  description: "Important disclaimers about the information published on JobsNearMe.",
+  description: "Important disclaimers about the information published on Quizy Zone.",
 };
 
 const LAST_UPDATED = "September 1, 2026";
@@ -17,19 +17,18 @@ export default function DisclaimerPage() {
       <div className="article mt-6 text-[17px] text-gray-800">
         <h2>General information only</h2>
         <p>
-          The guides, articles, and search results on JobsNearMe are provided for general
+          The quizzes, articles, and search results on Quizy Zone are provided for general
           informational purposes only. They do not constitute professional, legal, financial,
-          or immigration advice, and should not be relied on as a substitute for advice from a
+          or academic advice, and should not be relied on as a substitute for advice from a
           qualified professional or official government source.
         </p>
 
-        <h2>No employment guarantee</h2>
+        <h2>For entertainment and learning</h2>
         <p>
-          JobsNearMe is not a recruiter, employer, or job board, and does not guarantee that
-          any position, employer, work permit, or visa outcome described or found through this
-          site is available, legitimate, or accurate. Always verify job postings and employers
-          directly through official channels before applying or providing personal
-          information.
+          Quizzes on Quizy Zone are created for fun and general learning. Quiz scores are not
+          an official test result, qualification, or certification, and should not be used to
+          prepare for or replace any formal examination. For study or reference, always
+          confirm facts with authoritative sources such as textbooks or official publications.
         </p>
 
         <h2>Third-party and search content</h2>
@@ -44,15 +43,16 @@ export default function DisclaimerPage() {
         <p>
           This site displays advertising through Google AdSense for Search, including a
           related-search ad unit. We may earn revenue when you interact with these ads. This
-          does not influence the editorial content of our guides, and the ads themselves are
+          does not influence the editorial content of our quizzes, and the ads themselves are
           served and selected by Google, not by us.
         </p>
 
         <h2>Accuracy of information</h2>
         <p>
-          While we try to keep our guides current, job markets, application processes, and
-          requirements change frequently. We make no warranty that information on this site
-          is complete, accurate, or up to date at the time you read it.
+          While we research and double-check every quiz, facts such as records, rankings,
+          populations, and current events change over time. We make no warranty that
+          information on this site is complete, accurate, or up to date at the time you
+          read it.
         </p>
 
         <h2>Contact us</h2>

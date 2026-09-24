@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How JobsNearMe collects, uses, and protects information, including data handled by Google Search and Google AdSense.",
+    "How Quizy Zone collects, uses, and protects information, including data handled by Google Search and Google AdSense.",
 };
 
 const LAST_UPDATED = "September 1, 2026";
@@ -17,7 +17,7 @@ export default function PrivacyPage() {
 
       <div className="article mt-6 text-[17px] text-gray-800">
         <p>
-          This Privacy Policy explains what information JobsNearMe (&quot;we&quot;,
+          This Privacy Policy explains what information Quizy Zone (&quot;we&quot;,
           &quot;us&quot;) collects when you visit this site, how it is used, and the
           choices you have. By using this site, you agree to the practices described
           below.

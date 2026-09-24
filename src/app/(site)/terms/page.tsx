@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
-  description: "The terms and conditions for using the JobsNearMe website.",
+  description: "The terms and conditions for using the Quizy Zone website.",
 };
 
 const LAST_UPDATED = "September 1, 2026";
@@ -17,39 +17,38 @@ export default function TermsPage() {
       <div className="article mt-6 text-[17px] text-gray-800">
         <p>
           These Terms of Use (&quot;Terms&quot;) govern your access to and use of
-          JobsNearMe (&quot;we&quot;, &quot;us&quot;, the &quot;site&quot;). By using this
+          Quizy Zone (&quot;we&quot;, &quot;us&quot;, the &quot;site&quot;). By using this
           site, you agree to these Terms. If you do not agree, please do not use the site.
         </p>
 
         <h2>Use of the site</h2>
         <p>
-          JobsNearMe publishes free informational guides about finding jobs, and provides a
-          search box powered by Google Programmable Search. You agree to use the site only
+          Quizy Zone publishes free quizzes, trivia, and informational articles for
+          entertainment and learning, and provides a search box powered by Google
+          Programmable Search. You agree to use the site only
           for lawful purposes and not to misuse, disrupt, or attempt unauthorized access to
           any part of it.
         </p>
 
-        <h2>No guarantee of employment</h2>
+        <h2>Entertainment and educational use</h2>
         <p>
-          JobsNearMe is an informational resource, not a staffing agency, employer, or job
-          board. We do not list, verify, or endorse specific job openings, and nothing on
-          this site is a guarantee of employment, income, or work authorization. Always
-          verify any opportunity — and the identity of the employer — through official,
-          reputable sources before applying, paying any fee, or sharing personal
-          information.
+          Quizy Zone&apos;s quizzes are provided for entertainment and general learning only.
+          Scores and results are not an official assessment, certification, or measure of
+          ability, and should not be relied on for exams, competitions, or professional
+          decisions. We do not offer prizes, and we never ask you to pay to play a quiz.
         </p>
 
         <h2>Search results and third-party links</h2>
         <p>
           Search results on this site are returned by Google&apos;s Programmable Search
           Engine and may link to external websites we do not control or operate, including
-          third-party job boards and employer sites. We are not responsible for the content,
+          third-party reference and trivia sites. We are not responsible for the content,
           accuracy, or practices of any third-party site.
         </p>
 
         <h2>Intellectual property</h2>
         <p>
-          The text, layout, and design of JobsNearMe&apos;s own articles and pages are owned
+          The text, layout, and design of Quizy Zone&apos;s own articles and pages are owned
           by us or our licensors and may not be reproduced without permission, except for
           personal, non-commercial use.
         </p>
@@ -63,7 +62,7 @@ export default function TermsPage() {
 
         <h2>Limitation of liability</h2>
         <p>
-          To the fullest extent permitted by law, JobsNearMe shall not be liable for any
+          To the fullest extent permitted by law, Quizy Zone shall not be liable for any
           indirect, incidental, or consequential damages arising from your use of this site
           or reliance on its content.
         </p>

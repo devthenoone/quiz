@@ -3,44 +3,45 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About JobsNearMe — helping people find local, part-time, warehouse, and remote jobs near them.",
+  description: "About Quizy Zone — fun, free quizzes and trivia on general knowledge, science, history, sports, movies, music, and more.",
 };
 
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-3xl font-bold text-gray-900">About JobsNearMe</h1>
+      <h1 className="text-3xl font-bold text-gray-900">About Quizy Zone</h1>
 
       <div className="article mt-6 text-[17px] text-gray-800">
         <p>
-          JobsNearMe helps people find work close to home. Whether you are searching for
-          your first part-time role, a warehouse job with an immediate start, or a
-          work-from-home position, our guides make the local job hunt simpler and faster.
+          Quizy Zone is a home for curious minds. Whether you want a quick brain teaser on
+          your lunch break, questions for your next pub trivia night, or a fun way to revise
+          for school, our quizzes make learning something new feel like a game.
         </p>
 
         <h2>What we do</h2>
         <p>
-          We publish clear, no-nonsense guides on how to search, apply, and get hired for
-          jobs near you. Every article focuses on real steps you can take today — where to
-          look, how to stand out, and how to avoid common mistakes and scams.
+          We publish free quizzes and trivia across general knowledge, science, history,
+          geography, sports, movies &amp; TV, music, and technology. Every quiz comes with
+          clear answers and short explanations, so you learn a fun fact even when you get a
+          question wrong.
         </p>
 
         <h2>Who it&apos;s for</h2>
         <ul>
-          <li>Students looking for flexible, part-time and weekend work</li>
-          <li>Job seekers who want immediate-start warehouse and delivery roles</li>
-          <li>Anyone exploring remote and work-from-home opportunities nearby</li>
-          <li>People returning to work who need clear, practical guidance</li>
+          <li>Trivia lovers who want a fresh challenge every day</li>
+          <li>Students looking for a fun way to test and revise what they&apos;ve learned</li>
+          <li>Quiz hosts searching for ready-made questions for game night</li>
+          <li>Families and friends who enjoy a bit of friendly competition</li>
         </ul>
 
         <h2>Our promise</h2>
         <p>
-          Honest, up-to-date advice — no fluff. We keep our guides focused on what actually
-          helps you get hired near you.
+          Accurate, well-researched questions — no trick answers. We double-check every quiz
+          and update it when facts change.
         </p>
 
         <p>
-          Have a question or a topic you&apos;d like us to cover?{" "}
+          Spotted a mistake or have a quiz topic you&apos;d like us to cover?{" "}
           <Link href="/contact" className="text-brand hover:underline">
             Get in touch
           </Link>

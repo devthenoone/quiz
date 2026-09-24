@@ -6,10 +6,10 @@ import { openInNewTab } from "@/lib/openTab";
 import GoogleWordmark from "./GoogleWordmark";
 
 /**
- * "Enhanced by Google" job search box. Submitting opens the query on your Google
+ * "Enhanced by Google" quiz search box. Submitting opens the query on your Google
  * Custom Search Engine (a real Google-hosted results page) in a new tab.
  */
-export default function GoogleJobSearch({
+export default function GoogleQuizSearch({
   variant = "hero",
 }: {
   variant?: "hero" | "sidebar";
@@ -18,7 +18,7 @@ export default function GoogleJobSearch({
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const term = q.trim() || "jobs near me";
+    const term = q.trim() || "general knowledge quiz";
     openInNewTab(cseUrl(term));
   }
 
@@ -46,7 +46,7 @@ export default function GoogleJobSearch({
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Job title, keyword or company"
+            placeholder="Search a quiz topic, trivia, or question"
             className={`w-full rounded-lg border border-gray-200 py-2.5 pl-9 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 ${
               hero ? "border-transparent" : ""
             }`}
@@ -58,7 +58,7 @@ export default function GoogleJobSearch({
             hero ? "" : "w-full"
           }`}
         >
-          Search{hero ? " Jobs" : ""}
+          Search{hero ? " Quizzes" : ""}
         </button>
       </form>
       <p className="mt-2 text-center text-xs text-gray-500">

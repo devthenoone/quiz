@@ -12,10 +12,10 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const { category } = await searchParams;
   const cat = category ? categoryBySlug(category) : undefined;
   return {
-    title: cat ? `${cat.name} Guides` : "Guides",
+    title: cat ? `${cat.name} Quizzes` : "Quizzes",
     description: cat
-      ? `Guides about ${cat.name.toLowerCase()} jobs near you.`
-      : "Practical guides on finding, applying for, and landing jobs near you.",
+      ? `${cat.name} quizzes, trivia questions, and answers.`
+      : "Fun quizzes and trivia questions across science, history, geography, sports, movies, music, and more.",
   };
 }
 
@@ -25,9 +25,9 @@ export default async function GuidesPage({ searchParams }: Props) {
     <PostListing
       type="guide"
       basePath="/guides"
-      heading="Career Guides"
-      description="Practical guides to finding and landing local jobs fast."
-      emptyLabel="No guides yet."
+      heading="All Quizzes"
+      description="Pick a category and test your knowledge with our latest quizzes."
+      emptyLabel="No quizzes yet."
       category={category}
     />
   );

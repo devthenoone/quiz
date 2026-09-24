@@ -13,12 +13,12 @@ curl -sSfL https://get.tur.so/install.sh | bash
 # Windows: use WSL, or install via the instructions at https://docs.turso.tech
 
 turso auth signup          # opens the browser to sign up / log in
-turso db create jobsnearme # create the database
+turso db create quizyzone # create the database
 ```
 Get the two connection values:
 ```bash
-turso db show jobsnearme --url          # -> libsql://jobsnearme-XXXX.turso.io   (TURSO_DATABASE_URL)
-turso db tokens create jobsnearme        # -> a long token                        (TURSO_AUTH_TOKEN)
+turso db show quizyzone --url          # -> libsql://quizyzone-XXXX.turso.io   (TURSO_DATABASE_URL)
+turso db tokens create quizyzone        # -> a long token                        (TURSO_AUTH_TOKEN)
 ```
 > No CLI? You can also create the DB and copy these values from the Turso web
 > dashboard at https://turso.tech.
@@ -29,7 +29,7 @@ turso db tokens create jobsnearme        # -> a long token                      
 cd "your project folder"
 git init
 git add .
-git commit -m "JobsNearMe"
+git commit -m "Quizy Zone"
 # create an empty repo on GitHub, then:
 git remote add origin https://github.com/<you>/<repo>.git
 git push -u origin main
@@ -63,7 +63,7 @@ TURSO_DATABASE_URL="libsql://…turso.io" TURSO_AUTH_TOKEN="…" \
 
 # (optional) load the 4 sample articles into Turso:
 TURSO_DATABASE_URL="libsql://…turso.io" TURSO_AUTH_TOKEN="…" \
-  node scripts/seed-jobs.mjs
+  node scripts/seed-quizzes.mjs
 ```
 On Windows PowerShell, set them first:
 ```powershell
@@ -82,6 +82,6 @@ Just `git push` — Vercel redeploys automatically. Env vars persist.
 
 ## Notes / troubleshooting
 - **Local dev** needs nothing new: leave `TURSO_*` blank in `.env.local` and it uses `./data/app.db`.
-- **Data lives only in Turso** in production — back it up with `turso db shell jobsnearme .dump > backup.sql` periodically.
+- **Data lives only in Turso** in production — back it up with `turso db shell quizyzone .dump > backup.sql` periodically.
 - If pages error with a DB message, double-check `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` are set in Vercel for the Production environment and redeploy.
 - AdSense unit shows nothing until you set the IDs in Settings **and** your account is approved for RSoC.

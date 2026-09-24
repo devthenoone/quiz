@@ -1,4 +1,4 @@
-# Deployment guide — JobsNearMe
+# Deployment guide — Quizy Zone
 
 This app is a **Next.js (Node) server** with a **SQLite** database file on disk. That
 one fact drives every hosting choice below.
@@ -34,7 +34,7 @@ sudo npm install -g pm2
 ### 2. Get the code onto the server
 ```bash
 # via git:
-git clone <your-repo-url> jobsnearme && cd jobsnearme
+git clone <your-repo-url> quizyzone && cd quizyzone
 # or copy the folder up with scp/rsync (exclude node_modules and .next).
 ```
 
@@ -62,7 +62,7 @@ The app is now running on `http://127.0.0.1:3000`.
 ### 5. Put Nginx + HTTPS in front
 ```bash
 sudo apt-get install -y nginx
-sudo nano /etc/nginx/sites-available/jobsnearme
+sudo nano /etc/nginx/sites-available/quizyzone
 ```
 Paste:
 ```nginx
@@ -81,7 +81,7 @@ server {
 }
 ```
 ```bash
-sudo ln -s /etc/nginx/sites-available/jobsnearme /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/quizyzone /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 
 # Free HTTPS certificate:
@@ -95,7 +95,7 @@ Point your domain's DNS **A record** at the server's IP first.
 git pull            # or re-upload files
 npm ci
 npm run build
-pm2 restart jobsnearme
+pm2 restart quizyzone
 ```
 
 ### Backups (important — your content lives in one file)
@@ -111,16 +111,16 @@ cp data/app.db ~/backups/app-$(date +%F).db
 A `Dockerfile` and `.dockerignore` are included. **Persist `/app/data`** with a volume.
 
 ```bash
-docker build -t jobsnearme .
-docker run -d --name jobsnearme -p 3000:3000 \
+docker build -t quizyzone .
+docker run -d --name quizyzone -p 3000:3000 \
   -e AUTH_SECRET="$(node -e "console.log(require('crypto').randomBytes(48).toString('hex'))")" \
   -e NEXT_PUBLIC_SITE_URL="https://your-domain.com" \
   -e NEXT_PUBLIC_SHOW_KEYWORD_PREVIEW="false" \
-  -v jobsnearme_data:/app/data \
-  jobsnearme
+  -v quizyzone_data:/app/data \
+  quizyzone
 
 # Create your admin account inside the container:
-docker exec -it jobsnearme node scripts/create-user.mjs you@your-domain.com "a-strong-password" "Your Name"
+docker exec -it quizyzone node scripts/create-user.mjs you@your-domain.com "a-strong-password" "Your Name"
 ```
 On Railway/Render/Fly: deploy the Dockerfile and attach a **persistent volume mounted at
 `/app/data`**, then set the same env vars in their dashboard.

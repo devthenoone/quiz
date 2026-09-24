@@ -1,4 +1,4 @@
-# KeywordBlog
+# Quizy Zone
 
 A blogging platform where **every post shows a Google "Related Searches" unit in the middle of the article** — implemented as the official, revenue-earning **AdSense for Search (Related Search for Content / RSoC)** unit.
 

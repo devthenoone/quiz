@@ -35,7 +35,7 @@ export default function AdminShell({
       {/* Top bar */}
       <header className="sticky top-0 z-40 flex h-16 items-center justify-between bg-admin-crimson px-6">
         <Link href="/dashboard" className="text-lg font-bold text-white">
-          Jobs Near Me
+          Quizy Zone
         </Link>
 
         <div className="relative">
@@ -131,7 +131,7 @@ export default function AdminShell({
         <main className="min-w-0 flex-1 px-6 py-8 sm:px-10">
           {children}
           <footer className="mt-16 pb-6 text-xs text-gray-400">
-            Admin 1.0.7 · Software by JobsNearMe
+            Admin 1.0.7 · Software by Quizy Zone
           </footer>
         </main>
       </div>
