@@ -17,9 +17,14 @@ function createDb(): Client {
   // On a serverless/read-only host (e.g. Vercel) a file DB cannot work — make the
   // misconfiguration explicit instead of failing with a confusing filesystem error.
   if (url.startsWith("file:") && process.env.VERCEL) {
+    const raw = process.env.TURSO_DATABASE_URL;
+    const seen =
+      raw === undefined ? "not set" : raw.trim() === "" ? "set but empty" : `starts with "${raw.slice(0, 8)}"`;
     throw new Error(
       "TURSO_DATABASE_URL (and TURSO_AUTH_TOKEN) must be set as Environment Variables " +
-        "in Vercel — a file database cannot run on serverless. See VERCEL_DEPLOY.md."
+        "in Vercel — a file database cannot run on serverless. See VERCEL_DEPLOY.md. " +
+        `[TURSO_DATABASE_URL ${seen}; TURSO_AUTH_TOKEN ${process.env.TURSO_AUTH_TOKEN ? "set" : "not set"}; ` +
+        `VERCEL_ENV=${process.env.VERCEL_ENV ?? "?"}]`
     );
   }
 
